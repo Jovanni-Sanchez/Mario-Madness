@@ -1,4 +1,4 @@
-package states.stages.objects;
+package stages.objects;
 
 class PhillyGlowGradient extends FlxSprite {
 	public var originalY:Float;

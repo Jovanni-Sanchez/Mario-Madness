@@ -1,4 +1,4 @@
-package states.stages.objects;
+package stages.objects;
 
 enum SpraycanState {
 	WAITING;

@@ -1,6 +1,6 @@
-package states.stages;
+package stages;
 
-import states.stages.objects.*;
+import stages.objects.*;
 
 class Template extends BaseStage {
 	// If you're moving your stage from PlayState to a stage file,

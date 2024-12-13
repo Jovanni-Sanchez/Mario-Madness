@@ -1,4 +1,4 @@
-package states.stages.objects;
+package stages.objects;
 
 class BackgroundTank extends BGSprite {
 	public var offsetX:Float = 400;

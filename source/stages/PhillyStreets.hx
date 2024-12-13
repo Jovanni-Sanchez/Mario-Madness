@@ -1,11 +1,11 @@
-package states.stages;
+package stages;
 
 import openfl.filters.ShaderFilter;
 import shaders.RainShader;
 import flixel.addons.display.FlxTiledSprite;
 import flixel.graphics.frames.FlxAtlasFrames;
 import substates.GameOverSubstate;
-import states.stages.objects.*;
+import stages.objects.*;
 import objects.Note;
 import cutscenes.CutsceneHandler;
 

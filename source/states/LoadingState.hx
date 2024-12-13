@@ -35,7 +35,7 @@ class LoadingState extends MusicBeatState {
 	inline static public function loadAndSwitchState(target:NextState, stopMusic = false, intrusive:Bool = true)
 		FlxG.switchState(getNextState(target, stopMusic, intrusive));
 
-	var target:FlxState = null;
+	var target:NextState = null;
 	var stopMusic:Bool = false;
 	var dontUpdate:Bool = false;
 

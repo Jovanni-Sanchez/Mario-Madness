@@ -1,6 +1,6 @@
-package states.stages;
+package stages;
 
-import states.stages.objects.*;
+import stages.objects.*;
 import substates.GameOverSubstate;
 import cutscenes.DialogueBox;
 import openfl.utils.Assets as OpenFlAssets;

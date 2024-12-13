@@ -1,4 +1,4 @@
-package states.stages.objects;
+package stages.objects;
 
 class MallCrowd extends BGSprite {
 	public var heyTimer:Float = 0;

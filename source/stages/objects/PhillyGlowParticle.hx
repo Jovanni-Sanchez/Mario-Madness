@@ -1,4 +1,4 @@
-package states.stages.objects;
+package stages.objects;
 
 class PhillyGlowParticle extends FlxSprite {
 	var lifeTime:Float = 0;

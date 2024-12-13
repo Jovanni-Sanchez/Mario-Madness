@@ -1,4 +1,4 @@
-package states.stages.objects;
+package stages.objects;
 
 class BackgroundGirls extends FlxSprite {
 	var isPissed:Bool = true;

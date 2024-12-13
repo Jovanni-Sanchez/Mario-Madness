@@ -1,4 +1,4 @@
-package states.stages;
+package stages;
 
 class Spooky extends BaseStage {
 	var halloweenBG:BGSprite;

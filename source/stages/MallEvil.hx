@@ -1,6 +1,6 @@
-package states.stages;
+package stages;
 
-import states.stages.objects.*;
+import stages.objects.*;
 
 class MallEvil extends BaseStage {
 	override function create() {

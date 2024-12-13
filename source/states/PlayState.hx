@@ -31,8 +31,8 @@ import openfl.filters.ShaderFilter;
 import objects.VideoSprite;
 import objects.Note.EventNote;
 import objects.*;
-import states.stages.*;
-import states.stages.objects.*;
+import stages.*;
+import stages.objects.*;
 #if LUA_ALLOWED
 import psychlua.*;
 #else
