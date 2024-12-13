@@ -90,7 +90,7 @@ class ReflectionFunctions {
 						FunkinLua.luaTrace('getPropertyFromGroup: Object #$index from group: $group doesn\'t exist!', false, false, FlxColor.RED);
 
 					default: // Is Group
-						var result:Dynamic = LuaUtils.getGroupStuff(realObject.members[index], variable, allowMaps);
+						var result:Dynamic = LuaUtils.getGroupStuff(Reflect.getProperty(realObject, 'members')[index], variable, allowMaps);
 						return result;
 				}
 			}
@@ -119,7 +119,8 @@ class ReflectionFunctions {
 							}
 
 						default: // Is Group
-							LuaUtils.setGroupStuff(realObject.members[index], variable, allowInstances ? parseSingleInstance(value) : value, allowMaps);
+							LuaUtils.setGroupStuff(Reflect.getProperty(realObject, 'members')[index], variable,
+								allowInstances ? parseSingleInstance(value) : value, allowMaps);
 					}
 				} else
 					FunkinLua.luaTrace('setPropertyFromGroup: Group/Array $group doesn\'t exist!', false, false, FlxColor.RED);
@@ -176,7 +177,7 @@ class ReflectionFunctions {
 
 				default: // Is Group
 					if (obj == null)
-						obj = groupOrArray.members[index];
+						obj = Reflect.getProperty(groupOrArray, 'members')[index]; // Reflect here because of FlxTypedSpriteGroup
 					groupOrArray.remove(obj, true);
 					if (destroy)
 						obj.destroy();
