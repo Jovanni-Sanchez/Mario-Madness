@@ -3,42 +3,42 @@ package backend;
 import openfl.utils.Assets;
 import lime.utils.Assets as LimeAssets;
 
-class CoolUtil
-{
-	inline public static function quantize(f:Float, snap:Float){
+class CoolUtil {
+	inline public static function quantize(f:Float, snap:Float) {
 		// changed so this actually works lol
 		var m:Float = Math.fround(f * snap);
-		//trace(snap);
+		// trace(snap);
 		return (m / snap);
 	}
 
 	inline public static function capitalize(text:String)
 		return text.charAt(0).toUpperCase() + text.substr(1).toLowerCase();
 
-	inline public static function coolTextFile(path:String):Array<String>
-	{
+	inline public static function coolTextFile(path:String):Array<String> {
 		var daList:String = null;
 		#if (sys && MODS_ALLOWED)
-		if(FileSystem.exists(path)) daList = File.getContent(path);
+		if (FileSystem.exists(path))
+			daList = File.getContent(path);
 		#else
-		if(Assets.exists(path)) daList = Assets.getText(path);
+		if (Assets.exists(path))
+			daList = Assets.getText(path);
 		#end
 		return daList != null ? listFromString(daList) : [];
 	}
 
-	inline public static function colorFromString(color:String):FlxColor
-	{
+	inline public static function colorFromString(color:String):FlxColor {
 		var hideChars = ~/[\t\n\r]/;
 		var color:String = hideChars.split(color).join('').trim();
-		if(color.startsWith('0x')) color = color.substring(color.length - 6);
+		if (color.startsWith('0x'))
+			color = color.substring(color.length - 6);
 
 		var colorNum:Null<FlxColor> = FlxColor.fromString(color);
-		if(colorNum == null) colorNum = FlxColor.fromString('#$color');
+		if (colorNum == null)
+			colorNum = FlxColor.fromString('#$color');
 		return colorNum != null ? colorNum : FlxColor.WHITE;
 	}
 
-	inline public static function listFromString(string:String):Array<String>
-	{
+	inline public static function listFromString(string:String):Array<String> {
 		var daList:Array<String> = [];
 		daList = string.trim().split('\n');
 
@@ -48,9 +48,8 @@ class CoolUtil
 		return daList;
 	}
 
-	public static function floorDecimal(value:Float, decimals:Int):Float
-	{
-		if(decimals < 1)
+	public static function floorDecimal(value:Float, decimals:Int):Float {
+		if (decimals < 1)
 			return Math.floor(value);
 
 		var tempMult:Float = 1;
@@ -61,16 +60,12 @@ class CoolUtil
 		return newValue / tempMult;
 	}
 
-	inline public static function dominantColor(sprite:flixel.FlxSprite):Int
-	{
+	inline public static function dominantColor(sprite:flixel.FlxSprite):Int {
 		var countByColor:Map<Int, Int> = [];
-		for(col in 0...sprite.frameWidth)
-		{
-			for(row in 0...sprite.frameHeight)
-			{
+		for (col in 0...sprite.frameWidth) {
+			for (row in 0...sprite.frameHeight) {
 				var colorOfThisPixel:FlxColor = sprite.pixels.getPixel32(col, row);
-				if(colorOfThisPixel.alphaFloat > 0.05)
-				{
+				if (colorOfThisPixel.alphaFloat > 0.05) {
 					colorOfThisPixel = FlxColor.fromRGB(colorOfThisPixel.red, colorOfThisPixel.green, colorOfThisPixel.blue, 255);
 					var count:Int = countByColor.exists(colorOfThisPixel) ? countByColor[colorOfThisPixel] : 0;
 					countByColor[colorOfThisPixel] = count + 1;
@@ -79,12 +74,10 @@ class CoolUtil
 		}
 
 		var maxCount = 0;
-		var maxKey:Int = 0; //after the loop this will store the max color
+		var maxKey:Int = 0; // after the loop this will store the max color
 		countByColor[FlxColor.BLACK] = 0;
-		for(key => count in countByColor)
-		{
-			if(count >= maxCount)
-			{
+		for (key => count in countByColor) {
+			if (count >= maxCount) {
 				maxCount = count;
 				maxKey = key;
 			}
@@ -93,10 +86,10 @@ class CoolUtil
 		return maxKey;
 	}
 
-	inline public static function numberArray(max:Int, ?min = 0):Array<Int>
-	{
+	inline public static function numberArray(max:Int, ?min = 0):Array<Int> {
 		var dumbArray:Array<Int> = [];
-		for (i in min...max) dumbArray.push(i);
+		for (i in min...max)
+			dumbArray.push(i);
 
 		return dumbArray;
 	}
@@ -111,20 +104,22 @@ class CoolUtil
 
 	inline public static function openFolder(folder:String, absolute:Bool = false) {
 		#if sys
-			if(!absolute) folder =  Sys.getCwd() + '$folder';
+		if (!absolute)
+			folder = Sys.getCwd() + '$folder';
 
-			folder = folder.replace('/', '\\');
-			if(folder.endsWith('/')) folder.substr(0, folder.length - 1);
+		folder = folder.replace('/', '\\');
+		if (folder.endsWith('/'))
+			folder.substr(0, folder.length - 1);
 
-			#if linux
-			var command:String = '/usr/bin/xdg-open';
-			#else
-			var command:String = 'explorer.exe';
-			#end
-			Sys.command(command, [folder]);
-			trace('$command $folder');
+		#if linux
+		var command:String = '/usr/bin/xdg-open';
 		#else
-			FlxG.error("Platform is not supported for CoolUtil.openFolder");
+		var command:String = 'explorer.exe';
+		#end
+		Sys.command(command, [folder]);
+		trace('$command $folder');
+		#else
+		FlxG.error("Platform is not supported for CoolUtil.openFolder");
 		#end
 	}
 
@@ -145,10 +140,8 @@ class CoolUtil
 		// #end
 	}
 
-	public static function setTextBorderFromString(text:FlxText, border:String)
-	{
-		switch(border.toLowerCase().trim())
-		{
+	public static function setTextBorderFromString(text:FlxText, border:String) {
+		switch (border.toLowerCase().trim()) {
 			case 'shadow':
 				text.borderStyle = SHADOW;
 			case 'outline':
