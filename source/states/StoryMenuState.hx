@@ -242,7 +242,7 @@ class StoryMenuState extends MusicBeatState {
 			else if (changeDiff)
 				changeDifficulty();
 
-			if (FlxG.keys.justPressed.CONTROL) {
+			if (#if !mac FlxG.keys.pressed.CONTROL #else FlxG.keys.pressed.WINDOWS #end) {
 				persistentUpdate = false;
 				openSubState(new GameplayChangersSubstate());
 			} else if (controls.RESET) {

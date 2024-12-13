@@ -223,6 +223,8 @@ class FunkinLua {
 
 		// build target (windows, mac, linux, etc.)
 		set('buildTarget', LuaUtils.getBuildTarget());
+		set('primaryModifier', Main.modifier_keys[0]); // Control or Command
+		set('secondaryModifier', Main.modifier_keys[1]); // Alt or Option
 
 		//
 		Lua_helper.add_callback(lua, "getRunningScripts", function() {

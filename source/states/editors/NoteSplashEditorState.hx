@@ -514,7 +514,7 @@ class NoteSplashEditorState extends MusicBeatState {
 			}
 
 			var changedOffset = false;
-			if (FlxG.keys.pressed.CONTROL && config.animations.get(curAnim) != null) {
+			if (#if !mac FlxG.keys.pressed.CONTROL #else FlxG.keys.pressed.WINDOWS #end && config.animations.get(curAnim) != null) {
 				if (FlxG.keys.justPressed.C) {
 					copiedOffset = config.animations.get(curAnim).offsets.copy();
 				} else if (FlxG.keys.justPressed.V) {
@@ -943,9 +943,9 @@ class NoteSplashEditorHelpSubState extends MusicBeatSubstate {
 			"Hold Shift - Move Offsets 10x faster",
 			"",
 			"",
-			"Ctrl + C - Copy Current Offset",
-			"Ctrl + V - Paste Copied Offset on Current Splash",
-			"Ctrl + R - Reset Current Offset"
+			"" + Main.modifier_keys[0] + " + C - Copy Current Offset",
+			"" + Main.modifier_keys[0] + " + V - Paste Copied Offset on Current Splash",
+			"" + Main.modifier_keys[0] + " + R - Reset Current Offset"
 		];
 
 		var helpTexts:FlxSpriteGroup = new FlxSpriteGroup();

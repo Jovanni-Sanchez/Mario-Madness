@@ -39,3 +39,4 @@ Refer to [Psych Engine's build instructions](https://github.com/ShadowMario/FNF-
 - [LarryFrost](https://github.com/LarryFrosty) - Lua Cleanup PR.
 - [ADA-Funni](https://github.com/ADA-Funni) - Mouse wheel shortcut for sustains within the Chart Editor.
 - [inky03](https://github.com/inky03) - Vortex Editor Functionality, a Everything Waveform view, Editor sustains, and scripting touch-ups.
+- [Burgerballs](https://github.com/Burgerballs) - Accuracy Types, UI Accomodation for Mac, and other PRs.
