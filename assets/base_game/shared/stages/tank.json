@@ -2,11 +2,18 @@
 	"directory": "week7",
 	"defaultZoom": 0.9,
 	"stageUI": "",
-
-	"boyfriend": [810, 100],
-	"girlfriend": [200, 65],
-	"opponent": [20, 100],
-
+	"boyfriend": [
+		810,
+		100
+	],
+	"girlfriend": [
+		200,
+		65
+	],
+	"opponent": [
+		20,
+		100
+	],
 	"preload": {
 		"images/tank0": 3,
 		"images/tank1": 2,
@@ -25,7 +32,12 @@
 		"images/tankRuins": 3,
 		"images/tankSky": 3
 	},
-
+	"introSounds": [
+		"intro3-pixel",
+		"intro2-pixel",
+		"intro1-pixel",
+		"introGo-pixel"
+	],
 	"_editorMeta": {
 		"dad": "tankman",
 		"boyfriend": "bf",
