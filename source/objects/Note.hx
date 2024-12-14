@@ -120,6 +120,7 @@ class Note extends FlxSprite {
 	public var ratingDisabled:Bool = false;
 
 	public var texture(default, set):String = null;
+	public var cover:HoldCover = null;
 
 	public var noAnimation:Bool = false;
 	public var noMissAnimation:Bool = false;
@@ -274,8 +275,8 @@ class Note extends FlxSprite {
 			prevNote.nextNote = this;
 
 		if (isSustainNote && prevNote != null) {
-			alpha = 0.6;
-			multAlpha = 0.6;
+			alpha = 1.0;
+			multAlpha = 1.0;
 			hitsoundDisabled = true;
 			if (ClientPrefs.data.downScroll)
 				flipY = true;
@@ -439,10 +440,10 @@ class Note extends FlxSprite {
 			return;
 
 		if (isSustainNote) {
-			animation.add(colArray[noteData] + 'holdend', [noteData + 4], 24, true);
-			animation.add(colArray[noteData] + 'hold', [noteData], 24, true);
+			animation.add(colArray[noteData] + 'holdend', [noteData + 4], 12, true);
+			animation.add(colArray[noteData] + 'hold', [noteData], 12, true);
 		} else
-			animation.add(colArray[noteData] + 'Scroll', [noteData + 4], 24, true);
+			animation.add(colArray[noteData] + 'Scroll', [noteData + 4], 12, true);
 	}
 
 	function attemptToAddAnimationByPrefix(name:String, prefix:String, framerate:Float = 24, doLoop:Bool = true) {

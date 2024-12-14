@@ -323,6 +323,12 @@ class EditorPlayState extends MusicBeatSubstate {
 						&& note.mustPress == evilNote.mustPress
 						&& note.noteType == evilNote.noteType;
 					if (matches && Math.abs(note.strumTime - evilNote.strumTime) == 0.0) {
+						if (evilNote.tail.length > 0)
+							for (tail in evilNote.tail) {
+								tail.destroy();
+								unspawnNotes.remove(tail);
+							}
+
 						evilNote.destroy();
 						unspawnNotes.remove(evilNote);
 						// continue;
@@ -592,6 +598,8 @@ class EditorPlayState extends MusicBeatSubstate {
 			},
 			startDelay: Conductor.crochet * 0.002 / playbackRate
 		});
+
+		updateScore();
 	}
 
 	private function onKeyPress(event:KeyboardEvent):Void {
@@ -814,7 +822,6 @@ class EditorPlayState extends MusicBeatSubstate {
 
 		// score and data
 		songMisses++;
-		updateScore();
 		vocals.volume = 0;
 		combo = 0;
 	}

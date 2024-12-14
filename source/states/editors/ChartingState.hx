@@ -815,27 +815,22 @@ class ChartingState extends MusicBeatState implements PsychUIEventHandler.PsychU
 						setSongPlaying(false);
 
 					if (mouseSnapCheckBox.checked
-						&& (FlxG.mouse.wheel != 0 && !#if !mac !FlxG.keys.pressed.CONTROL #else !FlxG.keys.pressed.WINDOWS #end))
-				)
-					{
+						&& (FlxG.mouse.wheel != 0 && !#if !mac !FlxG.keys.pressed.CONTROL #else !FlxG.keys.pressed.WINDOWS #end)) {
 						var snap:Float = Conductor.stepCrochet / (curQuant / 16) / curZoom;
 						var timeAdd:Float = (FlxG.keys.pressed.SHIFT ? 4 : 1) / (holdingAlt ? 4 : 1) * -FlxG.mouse.wheel * snap;
 						var time:Float = Math.round((FlxG.sound.music.time + timeAdd) / snap) * snap;
 						if (time > 0)
 							time += 0.000001; // goes at the start of a section more properly
 						FlxG.sound.music.time = time;
+					} else {
+						var speedMult:Float = (FlxG.keys.pressed.SHIFT ? 4 : 1) * (FlxG.mouse.wheel != 0 ? 4 : 1) / (holdingAlt ? 4 : 1);
+						if (FlxG.keys.pressed.W
+							|| (FlxG.mouse.wheel > 0 && !#if !mac !FlxG.keys.pressed.CONTROL #else !FlxG.keys.pressed.WINDOWS #end))
+							FlxG.sound.music.time -= Conductor.crochet * speedMult * 1.5 * elapsed / curZoom;
+						else if (FlxG.keys.pressed.S
+							|| (FlxG.mouse.wheel < 0 && !#if !mac !FlxG.keys.pressed.CONTROL #else !FlxG.keys.pressed.WINDOWS #end))
+							FlxG.sound.music.time += Conductor.crochet * speedMult * 1.5 * elapsed / curZoom;
 					}
-				else {
-					var speedMult:Float = (FlxG.keys.pressed.SHIFT ? 4 : 1) * (FlxG.mouse.wheel != 0 ? 4 : 1) / (holdingAlt ? 4 : 1);
-					if (FlxG.keys.pressed.W
-						|| (FlxG.mouse.wheel > 0 && !#if !mac !FlxG.keys.pressed.CONTROL #else !FlxG.keys.pressed.WINDOWS #end))
-				)
-					FlxG.sound.music.time -= Conductor.crochet * speedMult * 1.5 * elapsed / curZoom;
-				else if (FlxG.keys.pressed.S
-					|| (FlxG.mouse.wheel < 0 && !#if !mac !FlxG.keys.pressed.CONTROL #else !FlxG.keys.pressed.WINDOWS #end))
-				)
-					FlxG.sound.music.time += Conductor.crochet * speedMult * 1.5 * elapsed / curZoom;
-				}
 
 					FlxG.sound.music.time = FlxMath.bound(FlxG.sound.music.time, 0, FlxG.sound.music.length - 1);
 					if (FlxG.sound.music.playing)

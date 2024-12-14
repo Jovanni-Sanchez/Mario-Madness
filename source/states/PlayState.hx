@@ -154,6 +154,7 @@ class PlayState extends MusicBeatState {
 	public var opponentStrums:FlxTypedGroup<StrumNote> = new FlxTypedGroup<StrumNote>();
 	public var playerStrums:FlxTypedGroup<StrumNote> = new FlxTypedGroup<StrumNote>();
 	public var grpNoteSplashes:FlxTypedGroup<NoteSplash> = new FlxTypedGroup<NoteSplash>();
+	public var grpHoldCovers:FlxTypedGroup<HoldCover> = new FlxTypedGroup<HoldCover>();
 
 	public var camZooming:Bool = false;
 	public var camZoomingMult:Float = 1;
@@ -405,7 +406,7 @@ class PlayState extends MusicBeatState {
 				SONG.gfVersion = 'gf'; // Fix for the Chart Editor
 			gf = new Character(0, 0, SONG.gfVersion);
 			startCharacterPos(gf);
-			gfGroup.scrollFactor.set(0.95, 0.95);
+			gfGroup.scrollFactor.set(1, 1);
 			gfGroup.add(gf);
 		}
 
@@ -507,6 +508,7 @@ class PlayState extends MusicBeatState {
 		generateSong();
 
 		noteGroup.add(grpNoteSplashes);
+		noteGroup.add(grpHoldCovers);
 
 		camFollow = new FlxObject();
 		camFollow.setPosition(camPos.x, camPos.y);
@@ -635,6 +637,10 @@ class PlayState extends MusicBeatState {
 		grpNoteSplashes.add(splash);
 		splash.alpha = 0.000001; // cant make it invisible or it won't allow precaching
 
+		var cover:HoldCover = new HoldCover();
+		grpHoldCovers.add(cover);
+		cover.alpha = 0.0001;
+
 		super.create();
 		Paths.clearUnusedMemory();
 
@@ -733,7 +739,7 @@ class PlayState extends MusicBeatState {
 			case 2:
 				if (gf != null && !gfMap.exists(newCharacter)) {
 					var newGf:Character = new Character(0, 0, newCharacter);
-					newGf.scrollFactor.set(0.95, 0.95);
+					newGf.scrollFactor.set(1, 1);
 					gfMap.set(newCharacter, newGf);
 					gfGroup.add(newGf);
 					startCharacterPos(newGf);
@@ -1332,6 +1338,12 @@ class PlayState extends MusicBeatState {
 					for (evilNote in unspawnNotes) {
 						var matches:Bool = (noteColumn == evilNote.noteData && gottaHitNote == evilNote.mustPress && evilNote.noteType == noteType);
 						if (matches && Math.abs(spawnTime - evilNote.strumTime) == 0.0) {
+							if (evilNote.tail.length > 0) {
+								for (tail in evilNote.tail) {
+									tail.destroy();
+									unspawnNotes.remove(tail);
+								}
+							}
 							evilNote.destroy();
 							unspawnNotes.remove(evilNote);
 							ghostNotesCaught++;
@@ -2449,7 +2461,7 @@ class PlayState extends MusicBeatState {
 	public var totalPlayed:Int = 0;
 	public var totalNotesHit:Float = 0.0;
 
-	public var showCombo:Bool = false;
+	public var showCombo:Bool = true;
 	public var showComboNum:Bool = true;
 	public var showRating:Bool = true;
 
@@ -2563,7 +2575,7 @@ class PlayState extends MusicBeatState {
 
 		var daLoop:Int = 0;
 		var xThing:Float = 0;
-		if (showCombo)
+		if (showCombo && ((combo % 10) == 0))
 			comboGroup.add(comboSpr);
 
 		var separatedScore:String = Std.string(combo).lpad('0', 3);
@@ -2798,6 +2810,14 @@ class PlayState extends MusicBeatState {
 				invalidateNote(note);
 		});
 
+		var daNoteEnd:Note = null;
+		if (!daNote.isSustainNote && daNote.tail.length != 0)
+			daNoteEnd = daNote.tail[daNote.tail.length - 1];
+		else if (daNote.isSustainNote)
+			daNoteEnd = daNote.parent.tail[daNote.parent.tail.length - 1];
+		if (daNoteEnd != null && daNoteEnd.cover != null && daNoteEnd.cover.visible)
+			daNoteEnd.cover.visible = false;
+
 		noteMissCommon(daNote.noteData, daNote);
 		stagesFunc(function(stage:BaseStage) stage.noteMiss(daNote));
 		var result:Dynamic = callOnLuas('noteMiss', [
@@ -2949,6 +2969,8 @@ class PlayState extends MusicBeatState {
 		if (opponentVocals.length <= 0)
 			vocals.volume = 1;
 		strumPlayAnim(true, Std.int(Math.abs(note.noteData)), Conductor.stepCrochet * 1.25 / 1000 / playbackRate);
+		if (!isPixelStage)
+			spawnHoldCoverOnNote(note);
 		note.hitByOpponent = true;
 
 		stagesFunc(function(stage:BaseStage) stage.opponentNoteHit(note));
@@ -3037,6 +3059,10 @@ class PlayState extends MusicBeatState {
 					combo = 9999;
 				popUpScore(note);
 			}
+
+			if (!isPixelStage)
+				spawnHoldCoverOnNote(note);
+
 			var gainHealth:Bool = true; // prevent health gain, *if* sustains are treated as a singular note
 			if (guitarHeroSustains && note.isSustainNote)
 				gainHealth = false;
@@ -3063,8 +3089,28 @@ class PlayState extends MusicBeatState {
 		var result:Dynamic = callOnLuas('goodNoteHit', [notes.members.indexOf(note), leData, leType, isSus]);
 		if (result != LuaUtils.Function_Stop && result != LuaUtils.Function_StopHScript && result != LuaUtils.Function_StopAll)
 			callOnHScript('goodNoteHit', [note]);
-		if (!note.isSustainNote)
+		if (!note.isSustainNote) {
 			invalidateNote(note);
+			if (note.rating == 'bad' || note.rating == 'shit') {
+				makeGhostNote(note);
+			}
+		}
+	}
+
+	function makeGhostNote(note:Note) {
+		var ghost = new Note(note.strumTime, note.noteData, null, note.isSustainNote);
+		ghost.noteType = 'MISSED_NOTE';
+		ghost.multAlpha = note.multAlpha * .5;
+		ghost.mustPress = note.mustPress;
+		ghost.ignoreNote = true;
+		ghost.blockHit = true;
+		notes.add(ghost);
+		ghost.rgbShader.r.saturation = .2;
+		ghost.rgbShader.g.saturation = .2;
+		ghost.rgbShader.b.saturation = .2;
+		ghost.rgbShader.r = ghost.rgbShader.r;
+		ghost.rgbShader.g = ghost.rgbShader.g;
+		ghost.rgbShader.b = ghost.rgbShader.b;
 	}
 
 	public function invalidateNote(note:Note):Void {
@@ -3086,6 +3132,28 @@ class PlayState extends MusicBeatState {
 		splash.babyArrow = strum;
 		splash.spawnSplashNote(note);
 		grpNoteSplashes.add(splash);
+	}
+
+	public function spawnHoldCoverOnNote(note:Note) {
+		var daNoteEnd:Note;
+		if (!note.isSustainNote && note.tail.length != 0) {
+			daNoteEnd = note.tail[note.tail.length - 1];
+			if (daNoteEnd != null && daNoteEnd.cover == null)
+				spawnHoldCover(daNoteEnd);
+		} else if (note.isSustainNote) {
+			daNoteEnd = note.parent.tail[note.parent.tail.length - 1];
+			if (daNoteEnd == null && daNoteEnd.cover == null && !note.parent.wasGoodHit)
+				spawnHoldCover(daNoteEnd);
+			else if (daNoteEnd != null && daNoteEnd.cover != null && !daNoteEnd.visible)
+				daNoteEnd.visible = true;
+		}
+	}
+
+	public function spawnHoldCover(end:Note) {
+		var cover:HoldCover = grpHoldCovers.recycle(HoldCover);
+		var strums:Array<StrumNote> = end.mustPress ? playerStrums.members : opponentStrums.members;
+		cover.setupCover(end, strums[end.noteData]);
+		grpHoldCovers.add(cover);
 	}
 
 	override function destroy() {

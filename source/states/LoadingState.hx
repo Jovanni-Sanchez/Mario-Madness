@@ -329,6 +329,10 @@ class LoadingState extends MusicBeatState {
 				noteSplash += NoteSplash.getSplashSkinPostfix();
 			imagesToPrepare.push(noteSplash);
 
+			// LOAD HOLD COVER IMAGE
+			var holdCover:String = 'holdCovers/holdCover';
+			imagesToPrepare.push(holdCover);
+
 			try {
 				var path:String = Paths.json('$folder/preload');
 				var json:Dynamic = null;

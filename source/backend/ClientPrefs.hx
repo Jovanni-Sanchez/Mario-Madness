@@ -32,10 +32,10 @@ import states.TitleState;
 		[0xFFF9393F, 0xFFFFFFFF, 0xFF651038]
 	];
 	public var arrowRGBPixel:Array<Array<FlxColor>> = [
-		[0xFFE276FF, 0xFFFFF9FF, 0xFF60008D],
-		[0xFF3DCAFF, 0xFFF4FFFF, 0xFF003060],
-		[0xFF71E300, 0xFFF6FFE6, 0xFF003100],
-		[0xFFFF884E, 0xFFFFFAF5, 0xFF6C0000]
+		[0xFFC24B99, 0xFFFFFFFF, 0xFF3C1F56],
+		[0xFF00FFFF, 0xFFFFFFFF, 0xFF1542B7],
+		[0xFF12FA05, 0xFFFFFFFF, 0xFF0A4447],
+		[0xFFF9393F, 0xFFFFFFFF, 0xFF651038]
 	];
 
 	public var ghostTapping:Bool = true;
@@ -181,7 +181,7 @@ class ClientPrefs {
 
 		if (FlxG.save.data.framerate == null) {
 			final refreshRate:Int = FlxG.stage.application.window.displayMode.refreshRate;
-			data.framerate = Std.int(FlxMath.bound(refreshRate, 60, 240));
+			data.framerate = Std.int(FlxMath.bound(refreshRate, 60, 360));
 		}
 		#end
 
