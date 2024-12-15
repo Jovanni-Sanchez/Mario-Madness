@@ -3,7 +3,7 @@ package;
 #if android
 import android.content.Context;
 #end
-import debug.FPSCounter;
+import backend.debug.FPS;
 import flixel.graphics.FlxGraphic;
 import flixel.FlxGame;
 import flixel.FlxState;
@@ -49,7 +49,7 @@ class Main extends Sprite {
 	// changes how modifier keys are shown in UI.
 	// small heads-up Command is mapped to WINDOWS in Haxeflixel, Option is curiously mapped to ALT still though.
 	public static var modifier_keys:Array<String> = #if !mac ['Control', 'Alt']; #else ['Command', 'Option']; #end
-	public static var fpsVar:FPSCounter;
+	public static var fpsVar:FPS;
 
 	// You can pretty much ignore everything from here on - your code should go in your states.
 
@@ -114,7 +114,7 @@ class Main extends Sprite {
 			game.skipSplash, game.startFullscreen));
 
 		#if !mobile
-		fpsVar = new FPSCounter(10, 3, 0xFFFFFF);
+		fpsVar = new FPS(10, 3, 0xFFFFFF);
 		addChild(fpsVar);
 		Lib.current.stage.align = "tl";
 		Lib.current.stage.scaleMode = StageScaleMode.NO_SCALE;
