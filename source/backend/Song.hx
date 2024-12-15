@@ -132,7 +132,7 @@ class Song {
 
 		var formattedFolder:String = Paths.formatToSongPath(folder);
 		var formattedSong:String = Paths.formatToSongPath(jsonInput);
-		_lastPath = Paths.json('$formattedFolder/$formattedSong');
+		_lastPath = Paths.json('songs/$formattedFolder/$formattedSong');
 
 		#if MODS_ALLOWED
 		if (FileSystem.exists(_lastPath))

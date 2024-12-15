@@ -4,7 +4,7 @@ import backend.StageData;
 import objects.Character;
 import objects.Bar;
 import flixel.addons.display.shapes.FlxShapeCircle;
-import stages.StageWeek1 as BackgroundStage;
+import stages.MainStage as BackgroundStage;
 
 class NoteOffsetState extends MusicBeatState {
 	var stageDirectory:String = 'week1';

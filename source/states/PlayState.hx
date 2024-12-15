@@ -169,6 +169,8 @@ class PlayState extends MusicBeatState {
 	public var healthBar:Bar;
 	public var timeBar:Bar;
 
+	public var healthOverlay:FlxSprite;
+
 	var songPercent:Float = 0;
 
 	public var ratingsData:Array<Rating> = Rating.loadDefault();
@@ -381,28 +383,8 @@ class PlayState extends MusicBeatState {
 		gfGroup = new FlxSpriteGroup(GF_X, GF_Y);
 
 		switch (curStage) {
-			case 'stage':
-				new StageWeek1(); // Week 1
-			case 'spooky':
-				new Spooky(); // Week 2
-			case 'philly':
-				new Philly(); // Week 3
-			case 'limo':
-				new Limo(); // Week 4
-			case 'mall':
-				new Mall(); // Week 5 - Cocoa, Eggnog
-			case 'mallEvil':
-				new MallEvil(); // Week 5 - Winter Horrorland
-			case 'school':
-				new School(); // Week 6 - Senpai, Roses
-			case 'schoolEvil':
-				new SchoolEvil(); // Week 6 - Thorns
-			case 'tank':
-				new Tank(); // Week 7 - Ugh, Guns, Stress
-			case 'phillyStreets':
-				new PhillyStreets(); // Weekend 1 - Darnell, Lit Up, 2Hot
-			case 'phillyBlazin':
-				new PhillyBlazin(); // Weekend 1 - Blazin
+			case 'mainStage':
+				new MainStage(); // Week 1
 		}
 
 		#if (LUA_ALLOWED || HSCRIPT_ALLOWED)
@@ -545,6 +527,14 @@ class PlayState extends MusicBeatState {
 		healthBar.alpha = ClientPrefs.data.healthBarAlpha;
 		reloadHealthBarColors();
 		uiGroup.add(healthBar);
+
+		healthOverlay = new FlxSprite().loadGraphic(Paths.image('healthBars/mario'));
+		healthOverlay.y = healthBar.y - 5;
+		healthOverlay.screenCenter(X);
+		healthOverlay.scrollFactor.set();
+		healthOverlay.visible = !ClientPrefs.data.hideHud;
+		healthOverlay.alpha = ClientPrefs.data.healthBarAlpha;
+		uiGroup.add(healthOverlay);
 
 		iconP1 = new HealthIcon(boyfriend.healthIcon, true);
 		iconP1.y = healthBar.y - 75;

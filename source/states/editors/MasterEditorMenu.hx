@@ -11,9 +11,6 @@ class MasterEditorMenu extends MusicBeatState {
 		'Character Editor',
 		'Stage Editor',
 		'Week Editor',
-		'Menu Character Editor',
-		'Dialogue Editor',
-		'Dialogue Portrait Editor',
 		'Note Splash Editor'
 	];
 	private var grpTexts:FlxTypedGroup<Alphabet>;
@@ -101,12 +98,6 @@ class MasterEditorMenu extends MusicBeatState {
 					LoadingState.loadAndSwitchState(new StageEditorState());
 				case 'Week Editor':
 					FlxG.switchState(new WeekEditorState());
-				case 'Menu Character Editor':
-					FlxG.switchState(new MenuCharacterEditorState());
-				case 'Dialogue Editor':
-					LoadingState.loadAndSwitchState(new DialogueEditorState(), false);
-				case 'Dialogue Portrait Editor':
-					LoadingState.loadAndSwitchState(new DialogueCharacterEditorState(), false);
 				case 'Note Splash Editor':
 					FlxG.switchState(new NoteSplashEditorState());
 			}

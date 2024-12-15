@@ -3,7 +3,7 @@ package stages;
 import stages.objects.*;
 import objects.Character;
 
-class StageWeek1 extends BaseStage {
+class MainStage extends BaseStage {
 	var dadbattleBlack:BGSprite;
 	var dadbattleLight:BGSprite;
 	var dadbattleFog:DadBattleFog;
